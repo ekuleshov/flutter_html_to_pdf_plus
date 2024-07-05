@@ -22,4 +22,5 @@ flutter:
         pluginClass: FlutterHtmlToPdfPlugin
       ios:
         pluginClass: FlutterHtmlToPdfPlugin
-
+      macos:
+        pluginClass: FlutterHtmlToPdfPlusPlugin

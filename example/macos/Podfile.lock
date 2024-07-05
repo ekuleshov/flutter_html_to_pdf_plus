@@ -1,0 +1,29 @@
+PODS:
+  - flutter_html_to_pdf_plus (0.0.1):
+    - FlutterMacOS
+  - FlutterMacOS (1.0.0)
+  - path_provider_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+
+DEPENDENCIES:
+  - flutter_html_to_pdf_plus (from `Flutter/ephemeral/.symlinks/plugins/flutter_html_to_pdf_plus/macos`)
+  - FlutterMacOS (from `Flutter/ephemeral`)
+  - path_provider_foundation (from `Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/darwin`)
+
+EXTERNAL SOURCES:
+  flutter_html_to_pdf_plus:
+    :path: Flutter/ephemeral/.symlinks/plugins/flutter_html_to_pdf_plus/macos
+  FlutterMacOS:
+    :path: Flutter/ephemeral
+  path_provider_foundation:
+    :path: Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/darwin
+
+SPEC CHECKSUMS:
+  flutter_html_to_pdf_plus: 2bb53b8d96f0b2574cbd124e03b5e65f4bfeaa6f
+  FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
+  path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
+
+PODFILE CHECKSUM: 73d0feaa9ca8c9b13bc5b5e21fbe09c71472f86f
+
+COCOAPODS: 1.15.2
