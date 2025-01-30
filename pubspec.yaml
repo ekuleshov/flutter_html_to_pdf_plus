@@ -4,15 +4,15 @@ version: 0.1.0
 homepage: https://github.com/originoss/flutter_html_to_pdf_plus
 
 environment:
-  sdk: '>=2.19.6 <4.0.0'
-  flutter: ">=3.10.0"
+  sdk: '>=3.6.0 <4.0.0'
+  flutter: ">=3.27.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
 dev_dependencies: 
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
 
 flutter:
   plugin:
