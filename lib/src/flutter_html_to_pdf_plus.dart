@@ -9,107 +9,66 @@ import 'print_config_enums.dart';
 
 /// HTML to PDF Converter
 class FlutterHtmlToPdf {
-  static const MethodChannel _channel =
-      MethodChannel('flutter_html_to_pdf_plus');
+  static const MethodChannel _channel = MethodChannel('flutter_html_to_pdf_plus');
 
   /// Creates PDF Document from HTML content
   /// Can throw a [PlatformException] or (unlikely) a [MissingPluginException] converting html to pdf
-  static Future<File> convertFromHtmlContent({
-    required String content,
-    required PrintPdfConfiguration configuration,
-  }) async {
-    final File temporaryCreatedHtmlFile =
-        await FileUtils.createFileWithStringContent(
-      content,
-      configuration.htmlFilePath,
-    );
-    await FileUtils.appendStyleTagToHtmlFile(temporaryCreatedHtmlFile.path);
+  static Future<File> convertFromHtmlContent(
+      {required String content, required PrintPdfConfiguration configuration}) async {
+    final File temporaryCreatedHtmlFile = FileUtils.createFileWithStringContent(content, configuration.htmlFilePath);
+    // await FileUtils.appendStyleTagToHtmlFile(temporaryCreatedHtmlFile.path);
 
     final String generatedPdfFilePath = await _convertFromHtmlFilePath(
-      temporaryCreatedHtmlFile.path,
-      configuration.printSize,
-      configuration.printOrientation,
-      configuration.margins,
-    );
+        temporaryCreatedHtmlFile.path, configuration.printSize, configuration.printOrientation, configuration.margins);
 
-    temporaryCreatedHtmlFile.delete();
+    if (temporaryCreatedHtmlFile.existsSync()) {
+      temporaryCreatedHtmlFile.delete();
+    }
 
     return FileUtils.copyAndDeleteOriginalFile(
-      generatedPdfFilePath,
-      configuration.targetDirectory,
-      configuration.targetName,
-    );
+        generatedPdfFilePath, configuration.targetDirectory, configuration.targetName);
   }
 
   /// Creates PDF Document from File that contains HTML content
   /// Can throw a [PlatformException] or (unlikely) a [MissingPluginException] converting html to pdf
-  static Future<File> convertFromHtmlFile({
-    required File htmlFile,
-    required PrintPdfConfiguration configuration,
-  }) async {
-    await FileUtils.appendStyleTagToHtmlFile(htmlFile.path);
+  static Future<File> convertFromHtmlFile(
+      {required File htmlFile, required PrintPdfConfiguration configuration}) async {
+    // FileUtils.appendStyleTagToHtmlFile(htmlFile.path);
     final String generatedPdfFilePath = await _convertFromHtmlFilePath(
-      htmlFile.path,
-      configuration.printSize,
-      configuration.printOrientation,
-      configuration.margins,
-    );
+        htmlFile.path, configuration.printSize, configuration.printOrientation, configuration.margins);
 
     return FileUtils.copyAndDeleteOriginalFile(
-      generatedPdfFilePath,
-      configuration.targetDirectory,
-      configuration.targetName,
-    );
+        generatedPdfFilePath, configuration.targetDirectory, configuration.targetName);
   }
 
   /// Creates PDF Document from path to File that contains HTML content
   /// Can throw a [PlatformException] or (unlikely) a [MissingPluginException] converting html to pdf
-  static Future<File> convertFromHtmlFilePath({
-    required String htmlFilePath,
-    required PrintPdfConfiguration configuration,
-  }) async {
-    await FileUtils.appendStyleTagToHtmlFile(htmlFilePath);
+  static Future<File> convertFromHtmlFilePath(
+      {required String htmlFilePath, required PrintPdfConfiguration configuration}) async {
+    // await FileUtils.appendStyleTagToHtmlFile(htmlFilePath);
     final String generatedPdfFilePath = await _convertFromHtmlFilePath(
-      htmlFilePath,
-      configuration.printSize,
-      configuration.printOrientation,
-      configuration.margins,
-    );
+        htmlFilePath, configuration.printSize, configuration.printOrientation, configuration.margins);
 
     return FileUtils.copyAndDeleteOriginalFile(
-      generatedPdfFilePath,
-      configuration.targetDirectory,
-      configuration.targetName,
-    );
+        generatedPdfFilePath, configuration.targetDirectory, configuration.targetName);
   }
 
   /// Assumes the invokeMethod call will return successfully
   static Future<String> _convertFromHtmlFilePath(
-    String htmlFilePath,
-    PrintSize printSize,
-    PrintOrientation printOrientation,
-    PdfPageMargin pageMargin,
-  ) async {
-    int width = printSize
-        .getDimensionsInPixels[printOrientation.getWidthDimensionIndex];
-    int height = printSize
-        .getDimensionsInPixels[printOrientation.getHeightDimensionIndex];
+      String htmlFilePath, PrintSize printSize, PrintOrientation printOrientation, PdfPageMargin pageMargin) async {
+    int width = printSize.getDimensionsInPixels[printOrientation.getWidthDimensionIndex];
+    int height = printSize.getDimensionsInPixels[printOrientation.getHeightDimensionIndex];
 
     return await _channel.invokeMethod(
       'convertHtmlToPdf',
-      <String, dynamic>{
+      {
         'htmlFilePath': htmlFilePath,
         'width': width,
         'height': height,
         'printSize': printSize.printSizeKey,
         'orientation': printOrientation.orientationKey,
-        'margins': [
-          pageMargin.left,
-          pageMargin.top,
-          pageMargin.right,
-          pageMargin.bottom,
-        ],
+        'margins': [pageMargin.left, pageMargin.top, pageMargin.right, pageMargin.bottom],
       },
-    ) as String;
+    );
   }
 }

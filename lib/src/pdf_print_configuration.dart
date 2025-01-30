@@ -6,12 +6,7 @@ class PdfPageMargin {
   final int left;
   final int right;
 
-  const PdfPageMargin({
-    required this.top,
-    required this.bottom,
-    required this.left,
-    required this.right,
-  });
+  const PdfPageMargin({required this.top, required this.bottom, required this.left, required this.right});
 }
 
 /// Print Pdf Configuration
@@ -31,11 +26,10 @@ class PrintPdfConfiguration {
   /// `printSize` is the print size of the Pdf file
   ///
   /// `printOrientation` is the print orientation of the Pdf file
-  PrintPdfConfiguration({
+  const PrintPdfConfiguration({
     required this.targetDirectory,
     required this.targetName,
-    this.margins =
-        const PdfPageMargin(top: 50, bottom: 50, left: 50, right: 50),
+    this.margins = const PdfPageMargin(top: 50, bottom: 50, left: 50, right: 50),
     this.printSize = PrintSize.A4,
     this.printOrientation = PrintOrientation.Portrait,
   });
