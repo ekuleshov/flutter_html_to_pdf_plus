@@ -6,48 +6,57 @@ class PDFCreator {
      Creates a PDF using the given print formatter and saves it to the user's document directory.
      - returns: The generated PDF path.
      */
-    class func create(printFormatter: UIPrintFormatter, width: Double, height: Double, orientation: String, margins: [Int]?) -> URL {
-        
+    class func create(printFormatter: UIPrintFormatter, width: Double, height: Double, margins: [Int]?) -> URL {
+        // assign paperRect and printableRect values
+        let page = CGRect(x: 0, y: 0, width: width, height: height)
+
+        let printable: CGRect
+        if let margins = margins {
+            printable = CGRect(
+                x: CGFloat(margins[1]),           // left margin
+                y: CGFloat(margins[0]),           // top margin
+                width: width - CGFloat(margins[1] + margins[2]),  // width minus left and right margins
+                height: height - CGFloat(margins[0] + margins[3]) // height minus top and bottom margins
+            )
+        } else {
+            printable = page
+        }
+
         // assign the print formatter to the print page renderer
         let renderer = UIPrintPageRenderer()
         renderer.addPrintFormatter(printFormatter, startingAtPageAt: 0)
-        
-        // assign paperRect and printableRect values
-        let page = CGRect(x: 0, y: 0, width: width, height: height)
-        let printable = CGRect(x: Double(margins![0]), y: Double(margins![1]), width: width - Double(margins![0]) - Double(margins![2]), height: height - Double(margins![1]) - Double(margins![3]))
-
         renderer.setValue(page, forKey: "paperRect")
         renderer.setValue(printable, forKey: "printableRect")
-        
+
         // create pdf context and draw each page
         let pdfData = NSMutableData()
-        UIGraphicsBeginPDFContextToData(pdfData, .zero, nil)
-        
+        UIGraphicsBeginPDFContextToData(pdfData, page, nil)
+
         for i in 0..<renderer.numberOfPages {
-            UIGraphicsBeginPDFPageWithInfo(printable, nil)
-            renderer.drawPage(at: i, in:  CGRect.init(x: 0, y: 0, width:page.width, height: page.height))
+            UIGraphicsBeginPDFPage() // Let the system handle page setup
+            renderer.drawPage(at: i, in: UIGraphicsGetPDFContextBounds())
         }
-        
+
         UIGraphicsEndPDFContext();
-        
+
         guard nil != (try? pdfData.write(to: createdFileURL, options: .atomic))
             else { fatalError("Error writing PDF data to file.") }
-        
+
         return createdFileURL;
     }
-    
+
     /**
      Creates temporary PDF document URL
      */
     private class var createdFileURL: URL {
-        
+
         guard let directory = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
             else { fatalError("Error getting user's document directory.") }
-        
+
         let url = directory.appendingPathComponent("generatedPdfFile").appendingPathExtension("pdf")
         return url
     }
-    
+
     /**
      Search for matches in provided text
      */

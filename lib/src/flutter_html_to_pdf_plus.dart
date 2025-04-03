@@ -68,6 +68,7 @@ class FlutterHtmlToPdf {
         'printSize': printSize.printSizeKey,
         'orientation': printOrientation.orientationKey,
         'margins': [pageMargin.left, pageMargin.top, pageMargin.right, pageMargin.bottom],
+        'linksClickable': true,
       },
     );
   }
