@@ -14,11 +14,11 @@ A Flutter plugin for generating PDF documents from HTML code templates
   s.author           = { 'Origin OSS' => 'email@example.com' }
 
   s.source           = { :path => '.' }
-  s.source_files     = 'Classes/**/*'
-  s.public_header_files = 'Classes/**/*.h'
+  s.source_files     = 'flutter_html_to_pdf_plus/Sources/flutter_html_to_pdf_plus/**/*.swift'
+  # s.public_header_files = 'Classes/**/*.h'
   s.dependency 'FlutterMacOS'
 
-  s.platform = :osx, '11.00'
+  s.platform = :osx, '12.00'
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
   s.swift_version = '5.0'
 end

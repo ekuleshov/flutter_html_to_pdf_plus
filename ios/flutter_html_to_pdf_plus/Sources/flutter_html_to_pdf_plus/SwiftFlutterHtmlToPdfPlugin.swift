@@ -2,7 +2,7 @@ import Flutter
 import UIKit
 import WebKit
 
-public class SwiftFlutterHtmlToPdfPlugin: NSObject, FlutterPlugin{
+public class SwiftFlutterHtmlToPdfPlugin: NSObject, FlutterPlugin {
   var wkWebView : WKWebView!
   var urlObservation: NSKeyValueObservation?
     
